@@ -1,0 +1,75 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700&family=JetBrains+Mono&display=swap');
+
+$font-family-sans-serif: "Inter", sans-serif;
+$headings-font-family: "Montserrat", sans-serif;
+$font-family-monospace: "JetBrains Mono", monospace;
+
+/*-- scss:rules --*/
+.quarto-title-banner {
+  background: linear-gradient(135deg, #01092e 0%, #515e94 100%);
+}
+
+h2 {
+  color: #1F4E79;
+  border-bottom: 2px solid #2780E3;
+  padding-bottom: 0.3em;
+}
+
+/* ---------- 侧边目录：加框、浅蓝底、左侧蓝色粗边 ---------- */
+nav#TOC {
+  background-color: #F4F8FC;
+  border: 1px solid #D6E4F0;
+  border-left: 4px solid #2780E3;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(31, 78, 121, 0.08);
+}
+
+/* 目录标题 "Contents" */
+#toc-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1F4E79;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: none;
+}
+
+/* 当前所在章节加粗 */
+nav#TOC .nav-link.active {
+  font-weight: 600;
+  color: #1F4E79;
+}
+
+/* ---------- 作者和日期 ---------- */
+.quarto-title-meta-heading {
+  color: #2780E3;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.quarto-title-meta-contents {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1F4E79;
+}
+
+/* ---------- 标题：白字 + 蓝色错位重影 ---------- */
+.quarto-title-banner h1.title {
+  color: #FFFFFF !important;
+  text-shadow: 4px 4px 0 #3B5BDB;
+}
+
+.quarto-title-banner .subtitle {
+  color: #FFFFFF !important;
+  text-shadow: 2px 2px 0 #3B5BDB;
+}
+
+.quarto-title-banner .subtitle {
+  color: #FFFFFF !important;
+  text-shadow: none;
+  opacity: 0.95;
+}

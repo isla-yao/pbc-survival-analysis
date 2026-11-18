@@ -1,12 +1,21 @@
 ---
 title: "Survival Analysis of the Mayo Clinic PBC Trial"
-subtitle: "Kaplan-Meier estimation and Cox proportional hazards regression"
+subtitle: "Kaplan-Meier and Cox regression analysis"
 author: "Isla Yao"
 date: today
 format:
   html:
+    theme: [cosmo, custom.scss]
+    title-block-banner: true
+    title-block-banner-color: "white"
     toc: true
-    code-fold: show
+    toc-location: left
+    toc-title: "Contents"
+    code-fold: true
+    code-summary: "Show code"
+    highlight-style: github
+    fig-align: center
+    smooth-scroll: true
     embed-resources: true
 execute:
   warning: false
