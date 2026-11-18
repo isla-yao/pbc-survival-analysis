@@ -1,4 +1,5 @@
 # pbc-survival-analysis
+
 Survival analysis of the Mayo Clinic Primary Biliary Cholangitis (PBC) trial using Kaplan-Meier curves and Cox proportional hazards models in R.
 
 ## Key findings
@@ -22,3 +23,8 @@ Survival analysis of the Mayo Clinic Primary Biliary Cholangitis (PBC) trial usi
 ## Files
 
 - `analysis.qmd`: full analysis (Quarto source)
+- `analysis.html`: rendered report
+- `custom.scss`: custom theme (fonts, colours, layout)
+- `index.html`: redirects the site homepage to the report
+
+📄 **[View the full report](https://isla-yao.github.io/pbc-survival-analysis/)**
