@@ -2259,7 +2259,12 @@ color: white;
   <li><a href="#kaplan-meier-survival-curves" id="toc-kaplan-meier-survival-curves" class="nav-link" data-scroll-target="#kaplan-meier-survival-curves">4. Kaplan-Meier survival curves</a></li>
   <li><a href="#cox-proportional-hazards-model" id="toc-cox-proportional-hazards-model" class="nav-link" data-scroll-target="#cox-proportional-hazards-model">5. Cox proportional hazards model</a></li>
   <li><a href="#checking-the-proportional-hazards-assumption" id="toc-checking-the-proportional-hazards-assumption" class="nav-link" data-scroll-target="#checking-the-proportional-hazards-assumption">6. Checking the proportional hazards assumption</a></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">7. Discussion</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">7. Discussion</a>
+  <ul class="collapse">
+  <li><a href="#main-findings" id="toc-main-findings" class="nav-link" data-scroll-target="#main-findings">Main findings</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -2274,9 +2279,8 @@ color: white;
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
-Primary biliary cholangitis (PBC) is a chronic autoimmune liver disease in which the small bile ducts are progressively destroyed, eventually leading to cirrhosis and liver failure. This analysis uses data from the Mayo Clinic randomised placebo-controlled trial of D-penicillamine, conducted between 1974 and 1984 and distributed with the R `survival` package.
-
-The aims were to (1) compare time to death or liver transplant between the treatment groups using Kaplan-Meier estimation and the log-rank test, and (2) identify prognostic factors using a Cox proportional hazards model including treatment, age, sex, bilirubin and albumin.
+<p>Primary biliary cholangitis (PBC) is a chronic autoimmune liver disease in which the small bile ducts are progressively destroyed, eventually leading to cirrhosis and liver failure. This analysis uses data from the Mayo Clinic randomised placebo-controlled trial of D-penicillamine, conducted between 1974 and 1984 and distributed with the R <code>survival</code> package.</p>
+<p>The aims were to (1) compare time to death or liver transplant between the treatment groups using Kaplan-Meier estimation and the log-rank test, and (2) identify prognostic factors using a Cox proportional hazards model including treatment, age, sex, bilirubin and albumin.</p>
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">2. Setup</h2>
@@ -2356,7 +2360,7 @@ trt=Placebo         154       69     71.1    0.0611     0.121
  Chisq= 0.1  on 1 degrees of freedom, p= 0.7 </code></pre>
 </div>
 </div>
-The Kaplan-Meier curves for the two treatment groups overlap throughout follow-up and cross several times. Median time to death or transplant was 7.1 years (95% CI 6.4–11.2) in the D-penicillamine group and 8.7 years (95% CI 7.7–10.5) in the placebo group, with widely overlapping confidence intervals. The log-rank test showed no evidence of a difference between groups (χ² = 0.1, df = 1, p = 0.7). Estimates beyond about 10 years are less reliable because few patients remained at risk.
+<p>The Kaplan-Meier curves for the two treatment groups overlap throughout follow-up and cross several times. Median time to death or transplant was 7.1 years (95% CI 6.4–11.2) in the D-penicillamine group and 8.7 years (95% CI 7.7–10.5) in the placebo group, with widely overlapping confidence intervals. The log-rank test showed no evidence of a difference between groups (χ² = 0.1, df = 1, p = 0.7). Estimates beyond about 10 years are less reliable because few patients remained at risk.</p>
 </section>
 <section id="cox-proportional-hazards-model" class="level2">
 <h2 class="anchored" data-anchor-id="cox-proportional-hazards-model">5. Cox proportional hazards model</h2>
@@ -2415,8 +2419,7 @@ Wald test            = 176.7  on 5 df,   p=&lt;2e-16
 Score (logrank) test = 210.7  on 5 df,   p=&lt;2e-16</code></pre>
 </div>
 </div>
-Bilirubin was strongly right-skewed, so it was entered on the log2 scale; hazard ratios for bilirubin therefore refer to a doubling of its value.
-After adjustment, treatment was not associated with the hazard of death or transplant (HR for placebo vs D-penicillamine 1.07, 95% CI 0.77–1.50, p = 0.69), consistent with the log-rank test. Bilirubin was the strongest predictor: each doubling was associated with a near two-fold increase in hazard (HR 1.95, 95% CI 1.72–2.20). Higher albumin was protective (HR 0.33 per 1 g/dL, 95% CI 0.22–0.50), and older age was associated with higher hazard (HR 1.02 per year, 95% CI 1.00–1.04; roughly 21% per decade). The hazard was lower in women, but this was not statistically significant (HR 0.71, 95% CI 0.45–1.12), possibly reflecting the small number of men in the trial. The model showed good discrimination (concordance 0.82).
+<p>Bilirubin was strongly right-skewed, so it was entered on the log2 scale; hazard ratios for bilirubin therefore refer to a doubling of its value. After adjustment, treatment was not associated with the hazard of death or transplant (HR for placebo vs D-penicillamine 1.07, 95% CI 0.77–1.50, p = 0.69), consistent with the log-rank test. Bilirubin was the strongest predictor: each doubling was associated with a near two-fold increase in hazard (HR 1.95, 95% CI 1.72–2.20). Higher albumin was protective (HR 0.33 per 1 g/dL, 95% CI 0.22–0.50), and older age was associated with higher hazard (HR 1.02 per year, 95% CI 1.00–1.04; roughly 21% per decade). The hazard was lower in women, but this was not statistically significant (HR 0.71, 95% CI 0.45–1.12), possibly reflecting the small number of men in the trial. The model showed good discrimination (concordance 0.82).</p>
 </section>
 <section id="checking-the-proportional-hazards-assumption" class="level2">
 <h2 class="anchored" data-anchor-id="checking-the-proportional-hazards-assumption">6. Checking the proportional hazards assumption</h2>
@@ -2457,26 +2460,31 @@ GLOBAL     3.7331  5 0.59</code></pre>
 </section>
 <section id="discussion" class="level2">
 <h2 class="anchored" data-anchor-id="discussion">7. Discussion</h2>
-### Main findings
-
-D-penicillamine showed no benefit over placebo, either in the unadjusted Kaplan-Meier comparison or after adjustment for other covariates. In contrast, markers of liver function were strong prognostic factors: higher bilirubin and lower albumin were both associated with a substantially higher hazard of death or transplant, and older age was associated with a modest increase in hazard. The model discriminated well (concordance 0.82), and the proportional hazards assumption appeared reasonable.
-
-### Limitations
-
-- **Composite endpoint.** Death and transplant were combined into a single event. Transplant is a treatment decision rather than a disease outcome, and it prevents death from liver disease from being observed. A competing-risks approach (e.g. cause-specific hazards or Fine-Gray models) would separate the two outcomes.
-- **Linearity.** Age, log2(bilirubin) and albumin were assumed to act linearly on the log-hazard; this was not formally checked (e.g. with martingale residuals or splines).
-- **Small number of men**, which limits the precision of the sex effect.
-- **Historical data.** The trial predates current treatment (ursodeoxycholic acid), so absolute risks may not apply to patients today.
-
-### Next steps
-
-The `pbcseq` dataset contains repeated biomarker measurements for the same patients. A natural extension is a joint model linking the longitudinal trajectory of bilirubin to the hazard of death or transplant.
+<section id="main-findings" class="level3">
+<h3 class="anchored" data-anchor-id="main-findings">Main findings</h3>
+<p>D-penicillamine showed no benefit over placebo, either in the unadjusted Kaplan-Meier comparison or after adjustment for other covariates. In contrast, markers of liver function were strong prognostic factors: higher bilirubin and lower albumin were both associated with a substantially higher hazard of death or transplant, and older age was associated with a modest increase in hazard. The model discriminated well (concordance 0.82), and the proportional hazards assumption appeared reasonable.</p>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<ul>
+<li><strong>Composite endpoint.</strong> Death and transplant were combined into a single event. Transplant is a treatment decision rather than a disease outcome, and it prevents death from liver disease from being observed. A competing-risks approach (e.g. cause-specific hazards or Fine-Gray models) would separate the two outcomes.</li>
+<li><strong>Linearity.</strong> Age, log2(bilirubin) and albumin were assumed to act linearly on the log-hazard; this was not formally checked (e.g. with martingale residuals or splines).</li>
+<li><strong>Small number of men</strong>, which limits the precision of the sex effect.</li>
+<li><strong>Historical data.</strong> The trial predates current treatment (ursodeoxycholic acid), so absolute risks may not apply to patients today.</li>
+</ul>
+</section>
+<section id="next-steps" class="level3">
+<h3 class="anchored" data-anchor-id="next-steps">Next steps</h3>
+<p>The <code>pbcseq</code> dataset contains repeated biomarker measurements for the same patients. A natural extension is a joint model linking the longitudinal trajectory of bilirubin to the hazard of death or transplant.</p>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-- Therneau TM, Grambsch PM (2000). *Modeling Survival Data: Extending the Cox Model*. Springer.
-- Dickson ER, Grambsch PM, Fleming TR, Fisher LD, Langworthy A (1989). Prognosis in primary biliary    cirrhosis: model for decision making. *Hepatology*, 10(1), 1–7.
-- Therneau T (2024). *A Package for Survival Analysis in R*. R package `survival`.
+<ul>
+<li>Therneau TM, Grambsch PM (2000). <em>Modeling Survival Data: Extending the Cox Model</em>. Springer.</li>
+<li>Dickson ER, Grambsch PM, Fleming TR, Fisher LD, Langworthy A (1989). Prognosis in primary biliary cirrhosis: model for decision making. <em>Hepatology</em>, 10(1), 1–7.</li>
+<li>Therneau T (2024). <em>A Package for Survival Analysis in R</em>. R package <code>survival</code>.</li>
+</ul>
 </section>
 
 </main>
