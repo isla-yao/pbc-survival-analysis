@@ -143,11 +143,6 @@ D-penicillamine showed no benefit over placebo, either in the unadjusted Kaplan-
 - **Small number of men**, which limits the precision of the sex effect.
 - **Historical data.** The trial predates current treatment (ursodeoxycholic acid), so absolute risks may not apply to patients today.
 
-### Next steps
-
-The `pbcseq` dataset contains repeated biomarker measurements for the same patients. A natural extension is a joint model linking the longitudinal trajectory of bilirubin to the hazard of death or transplant.
-
-
 ## References
 
 - Therneau TM, Grambsch PM (2000). *Modeling Survival Data: Extending the Cox Model*. Springer.

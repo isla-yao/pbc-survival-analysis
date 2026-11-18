@@ -43,7 +43,6 @@ dataset from the R `survival` package.
 - [x] Kaplan-Meier curves with log-rank test
 - [x] Multivariable Cox proportional hazards model
 - [x] Proportional hazards checks (Schoenfeld residuals)
-- [ ] Extension: longitudinal biomarker modelling with `pbcseq`
 
 ## 📁 Repository structure
 
