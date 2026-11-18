@@ -48,6 +48,10 @@ pbc_trial$trt <- factor(pbc_trial$trt,
 
 pbc_trial$time_years <- pbc_trial$time / 365.25
 
+pbc_trial$sex <- factor(pbc_trial$sex,
+                        levels = c("m", "f"),
+                        labels = c("Male", "Female"))
+
 ```
 
 We restricted the analysis to the 312 patients who took part in the randomised trial, excluding 106 non-randomised patients with no treatment assignment. The outcome is a composite of death or liver transplant: 144 patients experienced the event (125 deaths and 19 transplants), and 168 were censored. Follow-up time was converted from days to years.
@@ -55,26 +59,31 @@ We restricted the analysis to the 312 patients who took part in the randomised t
 ## 4. Kaplan-Meier survival curves
 
 ```{r}
+#| fig-height: 6
+#| fig-width: 8
 km_fit <- survfit(Surv(time_years, event) ~ trt, data = pbc_trial)
-
 km_fit
 
-plot(km_fit,
-     col = c("steelblue", "darkorange"),
-     lwd = 2,
-     mark.time = TRUE,
-     xlab = "Years since registration",
-     ylab = "Probability of no death or transplant")
-legend("bottomleft",
-       legend = levels(pbc_trial$trt),
-       col = c("steelblue", "darkorange"),
-       lwd = 2, bty = "n")
+library(ggsurvfit)
+
+survfit2(Surv(time_years, event) ~ trt, data = pbc_trial) |>
+  ggsurvfit(linewidth = 1) +
+  add_confidence_interval() +
+  add_censor_mark(size = 2, alpha = 0.6) +
+  add_risktable(risktable_stats = "n.risk") +
+  add_pvalue(location = "annotation", x = 10, y = 0.9,
+             caption = "Log-rank {p.value}")  +
+  scale_color_manual(values = c("#1F4E79", "#E07B39")) +
+  scale_fill_manual(values = c("#1F4E79", "#E07B39")) +
+  scale_ggsurvfit() +
+  labs(x = "Years since registration",
+       y = "Probability of no death or transplant")
 
 survdiff(Surv(time_years, event) ~ trt, data = pbc_trial)
-
 ```
 
-The Kaplan-Meier curves for the two treatment groups overlap throughout follow-up and cross several times. Median time to death or transplant was 7.1 years (95% CI 6.4–11.2) in the D-penicillamine group and 8.7 years (95% CI 7.7–10.5) in the placebo group, with widely overlapping confidence intervals. The log-rank test showed no evidence of a difference between groups (χ² = 0.1, df = 1, p = 0.7). Estimates beyond about 10 years are less reliable because few patients remained at risk.
+The Kaplan-Meier curves for the two treatment groups overlap throughout follow-up and cross several times, and their 95% confidence bands overlap almost completely. Median time to death or transplant was 7.1 years (95% CI 6.4–11.2) in the D-penicillamine group and 8.7 years (95% CI 7.7–10.5) in the placebo group, with widely overlapping confidence intervals. The log-rank test showed no evidence of a difference between groups (χ² = 0.1, df = 1, p = 0.7).
+Estimates beyond about 10 years are less reliable: the risk table shows that only 16 patients per group remained at risk at 10 years, and 4 per group at 12 years, which is reflected in the widening confidence bands.
 
 ```{r}
 #| include: false
@@ -106,8 +115,62 @@ par(mfrow = c(1, 1))
 ```{r}
 cox_fit <- coxph(Surv(time_years, event) ~ trt + age + sex + log2(bili) + albumin,
                  data = pbc_trial)
-summary(cox_fit)
+
+library(gtsummary)
+
+tbl_regression(
+  cox_fit,
+  exponentiate = TRUE,
+  label = list(
+    trt ~ "Treatment",
+    age ~ "Age (years)",
+    sex ~ "Sex",
+    "log2(bili)" ~ "Bilirubin (log2, per doubling)",
+    albumin ~ "Albumin (g/dL)"
+  )
+) |>
+  bold_p() |>
+  bold_labels() |>
+  add_glance_source_note(
+    include = c(n, nevent, concordance, p.value.log),
+    label = list(
+      n ~ "N",
+      nevent ~ "Events",
+      concordance ~ "Concordance",
+      p.value.log ~ "Likelihood ratio test p"
+    ),
+    fmt_fun = list(p.value.log ~ label_style_pvalue())
+  )
 ```
+
+```{r}
+#| fig-height: 4
+library(ggplot2)
+library(broom)
+
+cox_df <- tidy(cox_fit, exponentiate = TRUE, conf.int = TRUE)
+cox_df$label <- c("Placebo vs D-penicillamine",
+                  "Age (per year)",
+                  "Female vs Male",
+                  "Bilirubin (per doubling)",
+                  "Albumin (per 1 g/dL)")
+cox_df$label <- factor(cox_df$label, levels = rev(cox_df$label))
+cox_df$significant <- cox_df$p.value < 0.05
+
+ggplot(cox_df, aes(x = estimate, y = label, colour = significant)) +
+  geom_vline(xintercept = 1, linetype = "dashed", colour = "grey50") +
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high),
+                width = 0.2, linewidth = 0.8) +
+  geom_point(size = 3) +
+  scale_x_log10() +
+  scale_colour_manual(values = c(`TRUE` = "#1F4E79", `FALSE` = "#9AA9C2"),
+                      guide = "none") +
+  labs(x = "Hazard ratio (95% CI, log scale)", y = NULL) +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_blank())
+```
+
 
 Bilirubin was strongly right-skewed, so it was entered on the log2 scale; hazard ratios for bilirubin therefore refer to a doubling of its value.
 After adjustment, treatment was not associated with the hazard of death or transplant (HR for placebo vs D-penicillamine 1.07, 95% CI 0.77–1.50, p = 0.69), consistent with the log-rank test. Bilirubin was the strongest predictor: each doubling was associated with a near two-fold increase in hazard (HR 1.95, 95% CI 1.72–2.20). Higher albumin was protective (HR 0.33 per 1 g/dL, 95% CI 0.22–0.50), and older age was associated with higher hazard (HR 1.02 per year, 95% CI 1.00–1.04; roughly 21% per decade). The hazard was lower in women, but this was not statistically significant (HR 0.71, 95% CI 0.45–1.12), possibly reflecting the small number of men in the trial. The model showed good discrimination (concordance 0.82).
@@ -121,6 +184,7 @@ ph_test
 ```
 
 ```{r}
+#| fig-height: 7
 par(mfrow = c(2, 3))
 for (i in 1:5) {
   plot(ph_test[i])
